@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Feedback | Kamil Mirza</title>
+  <link rel="shortcut icon" href="hyth.png" type="hyth">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #1c1c1c, #2e8b57);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #25D366, #128C7E);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    button.whatsapp-btn {
+        display: inline-block;
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #25D366, #128C7E);
+        color: #fff;
+        font-weight: bold;
+        border-radius: 30px;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+
+    }
+    a.whatsapp-btn{
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    a.whatsapp-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.6);
+    }
+    button.whatsapp-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.6);
+    }
+
+    /* Animated glow effect */
+    a.whatsapp-btn::before, button.whatsapp-btn::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 40%);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes pulse {
+      0% {transform: scale(0.8); opacity: 0.7;}
+      50% {transform: scale(1.2); opacity: 0.3;}
+      100% {transform: scale(0.8); opacity: 0.7;}
+    }
+
+    p {
+      margin-top: 20px;
+      color: #d0ffd6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Send WhatsApp Feedback</h1>
+    <!-- WhatsApp link: replace with your number -->
+    <a class="whatsapp-btn" href="https://wa.me/916398020665?text=Hello%20Kamil,%20here%20is%20my%20feedback...">
+      📱 Send Feedback on WhatsApp
+    </a> <br>
+    <button id="hm" class="whatsapp-btn">Go To Home Page</button>
+    <p>Click the button above to send feedback directly to my WhatsApp number.</p>
+  </div>
+
+  <script>
+    // Optional: log click event
+    document.querySelector(".whatsapp-btn").addEventListener("click", () => {
+      console.log("WhatsApp feedback button clicked — opening WhatsApp chat.");
+    });
+    document.getElementById("hm").onclick = function() {
+      window.location.href = "index.html";
+    };
+  </script>
+</body>
+</html>

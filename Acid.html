@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chemistry Acids — Dynamic Responsive List</title>
+    <link rel="shortcut icon" href="hyth.png" type="hyth">
+    <style>
+        :root {
+            --bg: #0b1220;
+            --card: #121a2b;
+            --accent: #00d4ff;
+            --text: #eaf2ff;
+            --muted: #9fb3c8;
+            --danger: #ff5c7a;
+            --success: #4ade80;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, Segoe UI, system-ui, -apple-system, Arial, sans-serif;
+            background:
+                radial-gradient(1200px 600px at 10% -10%, #0e1a33 0%, #0b1220 60%, #0b1220 100%),
+                linear-gradient(180deg, #0b1220 0%, #0b1220 100%);
+            color: var(--text);
+        }
+
+        /* Header / Hero */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: saturate(1.2) blur(10px);
+            background: rgba(11, 18, 32, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), #7cf0ff);
+            box-shadow: 0 6px 18px rgba(0, 212, 255, 0.35);
+        }
+
+        .brand small {
+            color: var(--muted);
+            font-weight: 500
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding: 24px 20px 8px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(24px, 4vw, 40px);
+            line-height: 1.15;
+            margin: 0 0 10px;
+            background: linear-gradient(90deg, #eaf2ff 0%, #7cf0ff 60%, #eaf2ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+            margin: 0
+        }
+
+        .hero .cta {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease, border-color .2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.12)
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--accent), #7cf0ff);
+            color: #06121f;
+            border: none;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(0, 212, 255, 0.35);
+        }
+
+        .btn.primary:hover {
+            transform: translateY(-2px) scale(1.02)
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat h3 {
+            margin: 0;
+            font-size: 18px
+        }
+
+        .stat p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        /* Controls */
+        .controls {
+            max-width: 1200px;
+            margin: 16px auto;
+            padding: 0 20px 20px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .field .tag {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        /* Grid */
+        .grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8px 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width:1100px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        @media (max-width:800px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media (max-width:520px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: var(--shadow);
+            transform: translateY(8px);
+            opacity: 0;
+            animation: reveal .6s ease forwards;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -40% -40% auto auto;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(closest-side, rgba(0, 212, 255, 0.25), transparent 70%);
+            transform: rotate(25deg);
+        }
+
+        .card:hover {
+            transform: translateY(0);
+            border-color: rgba(0, 212, 255, 0.35)
+        }
+
+        .card h4 {
+            margin: 0 0 6px;
+            font-size: 16px
+        }
+
+        .formula {
+            color: #7cf0ff;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 13px
+        }
+
+        .meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px
+        }
+
+        .chip {
+            font-size: 12px;
+            padding: 6px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .chip.strong {
+            border-color: rgba(255, 92, 122, 0.5);
+            color: #ffc2cc
+        }
+
+        .chip.weak {
+            border-color: rgba(74, 222, 128, 0.5);
+            color: #c9f7d9
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px
+        }
+
+        .mini {
+            font-size: 12px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            cursor: pointer
+        }
+
+        .mini:hover {
+            background: rgba(255, 255, 255, 0.12)
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(11, 18, 32, 0.6);
+            backdrop-filter: saturate(1.2) blur(10px);
+            padding: 18px 20px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            place-items: center;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 50;
+            padding: 20px;
+        }
+
+        .modal.open {
+            display: grid
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 560px;
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .modal-card h3 {
+            margin: 0 0 8px
+        }
+
+        .modal-card p {
+            color: var(--muted);
+            margin: 6px 0
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 12px
+        }
+
+        /* Animations */
+        @keyframes reveal {
+            to {
+                transform: translateY(0);
+                opacity: 1
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav">
+            <div class="brand">
+                <div class="logo"></div>
+                <div>
+                    Chemistry Atlas<br />
+                    <small>100 Acids — Explore, Filter, Learn</small>
+                </div>
+            </div>
+            <div class="cta">
+                <button class="btn" id="toggleTheme">🌙 Toggle theme</button>
+                <button class="btn primary" id="scrollExplore">Go to Home Page</button>
+            </div>
+        </div>
+        <div class="hero">
+            <div>
+                <h1>Discover 100 Acids with KAMIL MIRZA, Fully Dedicated Design</h1>
+                <p>Search, filter, and sort through a curated list of organic and inorganic acids—complete with formulas
+                    and strength tags.</p>
+                <div class="cta">
+                    <button class="btn primary" id="toControls">Start exploring</button>
+                    <button class="btn" id="resetAll">Reset filters</button>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <h3>Total Acids</h3>
+                    <p id="statTotal">100</p>
+                </div>
+                <div class="stat">
+                    <h3>Organic</h3>
+                    <p id="statOrganic">—</p>
+                </div>
+                <div class="stat">
+                    <h3>Inorganic</h3>
+                    <p id="statInorganic">—</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Controls -->
+    <section class="controls" id="controls">
+        <div class="field">
+            <span class="tag">Search</span>
+            <input type="text" id="search" placeholder="Search by name or formula (e.g., HCl, acetic)" />
+        </div>
+        <div class="field">
+            <span class="tag">Type</span>
+            <select id="type">
+                <option value="all">All</option>
+                <option value="organic">Organic</option>
+                <option value="inorganic">Inorganic</option>
+            </select>
+        </div>
+        <div class="field">
+            <span class="tag">Strength</span>
+            <select id="strength">
+                <option value="all">All</option>
+                <option value="strong">Strong</option>
+                <option value="weak">Weak</option>
+            </select>
+        </div>
+        <div class="field">
+            <span class="tag">Sort</span>
+            <select id="sort">
+                <option value="name-asc">Name (A→Z)</option>
+                <option value="name-desc">Name (Z→A)</option>
+                <option value="type">Type</option>
+                <option value="strength">Strength</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Grid -->
+    <section class="grid" id="grid"></section>
+
+    <!-- Footer -->
+    <footer>
+        © 2026 Kamil Mirza. Built for a clean, modern chemistry experience.
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-card">
+            <h3 id="modalTitle">Acid name</h3>
+            <p><strong>Formula:</strong> <span id="modalFormula"></span></p>
+            <p><strong>Type:</strong> <span id="modalType"></span></p>
+            <p><strong>Strength:</strong> <span id="modalStrength"></span></p>
+            <p id="modalNote"></p>
+            <div class="modal-actions">
+                <button class="btn mini" id="closeModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data: 100 acids (name, formula, type, strength, note)
+        const acids = [
+            // Inorganic — strong
+            { name: "Hydrochloric acid", formula: "HCl", type: "inorganic", strength: "strong", note: "Common strong acid used in labs and industry." },
+            { name: "Sulfuric acid", formula: "H₂SO₄", type: "inorganic", strength: "strong", note: "Highly corrosive; widely used in batteries and manufacturing." },
+            { name: "Nitric acid", formula: "HNO₃", type: "inorganic", strength: "strong", note: "Oxidizing strong acid; used in fertilizers and explosives." },
+            { name: "Perchloric acid", formula: "HClO₄", type: "inorganic", strength: "strong", note: "Very strong acid; powerful oxidizer at high concentrations." },
+            { name: "Hydrobromic acid", formula: "HBr", type: "inorganic", strength: "strong", note: "Strong acid; used in organic synthesis." },
+            { name: "Hydriodic acid", formula: "HI", type: "inorganic", strength: "strong", note: "Strong acid and reducing agent." },
+            { name: "Chloric acid", formula: "HClO₃", type: "inorganic", strength: "strong", note: "Strong acid; less common than perchloric." },
+            { name: "Bromic acid", formula: "HBrO₃", type: "inorganic", strength: "strong", note: "Strong acid; unstable in pure form." },
+            { name: "Iodic acid", formula: "HIO₃", type: "inorganic", strength: "strong", note: "Strong acid; iodine(V) oxoacid." },
+            { name: "Chromic acid", formula: "H₂CrO₄", type: "inorganic", strength: "strong", note: "Oxidizing acid; used in cleaning and plating." },
+
+            // Inorganic — weak
+            { name: "Phosphoric acid", formula: "H₃PO₄", type: "inorganic", strength: "weak", note: "Triprotic; used in food and rust removal." },
+            { name: "Sulfurous acid", formula: "H₂SO₃", type: "inorganic", strength: "weak", note: "Formed from SO₂ in water; reducing properties." },
+            { name: "Carbonic acid", formula: "H₂CO₃", type: "inorganic", strength: "weak", note: "Formed in carbonated water; unstable." },
+            { name: "Boric acid", formula: "H₃BO₃", type: "inorganic", strength: "weak", note: "Antiseptic and insecticide; weak Lewis acid." },
+            { name: "Hydrofluoric acid", formula: "HF", type: "inorganic", strength: "weak", note: "Weak acid but highly dangerous; attacks glass." },
+            { name: "Hypochlorous acid", formula: "HClO", type: "inorganic", strength: "weak", note: "Disinfectant; formed by chlorine in water." },
+            { name: "Hypobromous acid", formula: "HBrO", type: "inorganic", strength: "weak", note: "Disinfectant; analogous to HOCl." },
+            { name: "Hypoiodous acid", formula: "HIO", type: "inorganic", strength: "weak", note: "Unstable; iodine(I) oxoacid." },
+            { name: "Phosphorous acid", formula: "H₃PO₃", type: "inorganic", strength: "weak", note: "Diprotic; reducing agent." },
+            { name: "Hypophosphorous acid", formula: "H₃PO₂", type: "inorganic", strength: "weak", note: "Strong reducing agent; monoprotic." },
+            { name: "Hydrosulfuric acid", formula: "H₂S", type: "inorganic", strength: "weak", note: "Also called hydrogen sulfide in water." },
+            { name: "Selenic acid", formula: "H₂SeO₄", type: "inorganic", strength: "strong", note: "Analog of sulfuric acid; strong oxidizer." },
+            { name: "Selenous acid", formula: "H₂SeO₃", type: "inorganic", strength: "weak", note: "Analog of sulfurous acid." },
+            { name: "Telluric acid", formula: "H₆TeO₆", type: "inorganic", strength: "weak", note: "Hexaoxo tellurium acid; polyprotic." },
+            { name: "Arsenic acid", formula: "H₃AsO₄", type: "inorganic", strength: "weak", note: "Triprotic; toxic." },
+            { name: "Arsenous acid", formula: "H₃AsO₃", type: "inorganic", strength: "weak", note: "Toxic; reducing properties." },
+            { name: "Silicic acid", formula: "H₄SiO₄", type: "inorganic", strength: "weak", note: "Polymeric forms; weak acid in water." },
+            { name: "Antimonic acid", formula: "HSbO₃", type: "inorganic", strength: "weak", note: "Oxoacid of antimony(V)." },
+            { name: "Thiosulfuric acid", formula: "H₂S₂O₃", type: "inorganic", strength: "weak", note: "Unstable; related to thiosulfate." },
+            { name: "Periodic acid", formula: "HIO₄", type: "inorganic", strength: "strong", note: "Oxidizing; used in organic cleavage reactions." },
+
+            // Organic — carboxylic (common)
+            { name: "Acetic acid", formula: "CH₃COOH", type: "organic", strength: "weak", note: "Vinegar; versatile solvent and reagent." },
+            { name: "Formic acid", formula: "HCOOH", type: "organic", strength: "weak", note: "Found in ant venom; stronger than acetic." },
+            { name: "Propionic acid", formula: "C₂H₅COOH", type: "organic", strength: "weak", note: "Food preservative; pungent odor." },
+            { name: "Butyric acid", formula: "C₃H₇COOH", type: "organic", strength: "weak", note: "Rancid butter smell; occurs in dairy." },
+            { name: "Valeric acid", formula: "C₄H₉COOH", type: "organic", strength: "weak", note: "Pentanoic acid; unpleasant odor." },
+            { name: "Caproic acid", formula: "C₅H₁₁COOH", type: "organic", strength: "weak", note: "Hexanoic acid; fatty acid." },
+            { name: "Heptanoic acid", formula: "C₆H₁₃COOH", type: "organic", strength: "weak", note: "Medium-chain fatty acid." },
+            { name: "Caprylic acid", formula: "C₇H₁₅COOH", type: "organic", strength: "weak", note: "Octanoic acid; antimicrobial uses." },
+            { name: "Capric acid", formula: "C₉H₁₉COOH", type: "organic", strength: "weak", note: "Decanoic acid; in coconut oil." },
+            { name: "Lauric acid", formula: "C₁₁H₂₃COOH", type: "organic", strength: "weak", note: "Dodecanoic acid; common in oils." },
+            { name: "Myristic acid", formula: "C₁₃H₂₇COOH", type: "organic", strength: "weak", note: "Tetradecanoic acid; in nutmeg." },
+            { name: "Palmitic acid", formula: "C₁₅H₃₁COOH", type: "organic", strength: "weak", note: "Hexadecanoic acid; common saturated fat." },
+            { name: "Stearic acid", formula: "C₁₇H₃₅COOH", type: "organic", strength: "weak", note: "Octadecanoic acid; soaps and candles." },
+            { name: "Oleic acid", formula: "C₁₇H₃₃COOH", type: "organic", strength: "weak", note: "Monounsaturated; olive oil." },
+            { name: "Linoleic acid", formula: "C₁₇H₃₁COOH", type: "organic", strength: "weak", note: "Polyunsaturated essential fatty acid." },
+            { name: "Linolenic acid", formula: "C₁₇H₂₉COOH", type: "organic", strength: "weak", note: "Omega-3 polyunsaturated fatty acid." },
+            { name: "Arachidic acid", formula: "C₁₉H₃₉COOH", type: "organic", strength: "weak", note: "Saturated C20 fatty acid." },
+            { name: "Behenic acid", formula: "C₂₁H₄₃COOH", type: "organic", strength: "weak", note: "C22 fatty acid; cosmetics." },
+            { name: "Lignoceric acid", formula: "C₂₃H₄₇COOH", type: "organic", strength: "weak", note: "C24 fatty acid; plant waxes." },
+            { name: "Cerotic acid", formula: "C₂₅H₅₁COOH", type: "organic", strength: "weak", note: "C26 fatty acid; beeswax." },
+
+            // Organic — dicarboxylic & others
+            { name: "Oxalic acid", formula: "C₂H₂O₄", type: "organic", strength: "weak", note: "Dicarboxylic; cleaning and rust removal." },
+            { name: "Malonic acid", formula: "C₃H₄O₄", type: "organic", strength: "weak", note: "Dicarboxylic; synthesis building block." },
+            { name: "Succinic acid", formula: "C₄H₆O₄", type: "organic", strength: "weak", note: "Dicarboxylic; metabolic intermediate." },
+            { name: "Glutaric acid", formula: "C₅H₈O₄", type: "organic", strength: "weak", note: "Dicarboxylic; polymer precursor." },
+            { name: "Adipic acid", formula: "C₆H₁₀O₄", type: "organic", strength: "weak", note: "Nylon production; dicarboxylic." },
+            { name: "Pimelic acid", formula: "C₇H₁₂O₄", type: "organic", strength: "weak", note: "Heptanedioic acid." },
+            { name: "Suberic acid", formula: "C₈H₁₄O₄", type: "organic", strength: "weak", note: "Octanedioic acid." },
+            { name: "Azelaic acid", formula: "C₉H₁₆O₄", type: "organic", strength: "weak", note: "Skin treatments; nonanedioic acid." },
+            { name: "Sebacic acid", formula: "C₁₀H₁₈O₄", type: "organic", strength: "weak", note: "Decanedioic acid; polymers." },
+            { name: "Maleic acid", formula: "C₄H₄O₄", type: "organic", strength: "weak", note: "Cis-butenedioic acid." },
+            { name: "Fumaric acid", formula: "C₄H₄O₄", type: "organic", strength: "weak", note: "Trans-butenedioic acid; food additive." },
+            { name: "Malic acid", formula: "C₄H₆O₅", type: "organic", strength: "weak", note: "Found in apples; tart flavor." },
+            { name: "Tartaric acid", formula: "C₄H₆O₆", type: "organic", strength: "weak", note: "In grapes; baking powder component." },
+            { name: "Citric acid", formula: "C₆H₈O₇", type: "organic", strength: "weak", note: "In citrus fruits; chelating agent." },
+            { name: "Glycolic acid", formula: "C₂H₄O₃", type: "organic", strength: "weak", note: "Alpha-hydroxy acid; skincare." },
+            { name: "Lactic acid", formula: "C₃H₆O₃", type: "organic", strength: "weak", note: "Fermentation product; AHA." },
+            { name: "Pyruvic acid", formula: "C₃H₄O₃", type: "organic", strength: "weak", note: "Metabolic intermediate." },
+            { name: "Benzoic acid", formula: "C₇H₆O₂", type: "organic", strength: "weak", note: "Food preservative; aromatic." },
+            { name: "Salicylic acid", formula: "C₇H₆O₃", type: "organic", strength: "weak", note: "Skincare; precursor to aspirin." },
+            { name: "Phthalic acid", formula: "C₈H₆O₄", type: "organic", strength: "weak", note: "Aromatic dicarboxylic acid." },
+            { name: "Isophthalic acid", formula: "C₈H₆O₄", type: "organic", strength: "weak", note: "Meta isomer of phthalic acid." },
+            { name: "Terephthalic acid", formula: "C₈H₆O₄", type: "organic", strength: "weak", note: "PET plastic precursor." },
+            { name: "Cinnamic acid", formula: "C₉H₈O₂", type: "organic", strength: "weak", note: "Aromatic; fragrance industry." },
+            { name: "Acrylic acid", formula: "C₃H₄O₂", type: "organic", strength: "weak", note: "Polymer monomer; acrylates." },
+            { name: "Methacrylic acid", formula: "C₄H₆O₂", type: "organic", strength: "weak", note: "PMMA precursor." },
+            { name: "Crotonic acid", formula: "C₄H₆O₂", type: "organic", strength: "weak", note: "Trans-2-butenoic acid." },
+            { name: "Ascorbic acid", formula: "C₆H₈O₆", type: "organic", strength: "weak", note: "Vitamin C; antioxidant." },
+            { name: "Uric acid", formula: "C₅H₄N₄O₃", type: "organic", strength: "weak", note: "Purine metabolism product." },
+            { name: "Picric acid", formula: "C₆H₂(NO₂)₃OH", type: "organic", strength: "weak", note: "Trinitrophenol; explosive properties." },
+
+            // Halogenated & special organics
+            { name: "Chloroacetic acid", formula: "ClCH₂COOH", type: "organic", strength: "weak", note: "Stronger than acetic due to -Cl." },
+            { name: "Dichloroacetic acid", formula: "Cl₂CHCOOH", type: "organic", strength: "weak", note: "Used in research and synthesis." },
+            { name: "Trichloroacetic acid", formula: "CCl₃COOH", type: "organic", strength: "weak", note: "Strongly acidic; protein precipitation." },
+            { name: "Fluoroacetic acid", formula: "FCH₂COOH", type: "organic", strength: "weak", note: "Highly toxic; metabolic inhibitor." },
+            { name: "Bromoacetic acid", formula: "BrCH₂COOH", type: "organic", strength: "weak", note: "Alkylating properties." },
+            { name: "Iodoacetic acid", formula: "ICH₂COOH", type: "organic", strength: "weak", note: "Biochemical reagent." },
+            { name: "Peracetic acid", formula: "CH₃CO₃H", type: "organic", strength: "weak", note: "Strong oxidizer; disinfectant." },
+            { name: "Trifluoroacetic acid", formula: "CF₃COOH", type: "organic", strength: "weak", note: "Very acidic organic acid; volatile." },
+            { name: "Methanesulfonic acid", formula: "CH₃SO₃H", type: "organic", strength: "strong", note: "Strong, non-oxidizing sulfonic acid." },
+            { name: "Benzenesulfonic acid", formula: "C₆H₅SO₃H", type: "organic", strength: "strong", note: "Strong acid; sulfonation chemistry." },
+            { name: "p-Toluenesulfonic acid", formula: "CH₃C₆H₄SO₃H", type: "organic", strength: "strong", note: "Common strong organic acid catalyst." },
+            { name: "Camphorsulfonic acid", formula: "C₁₀H₁₆O₄S", type: "organic", strength: "strong", note: "Chiral acid; resolution agent." },
+
+            // Cyanide & others
+            { name: "Hydrocyanic acid", formula: "HCN", type: "organic", strength: "weak", note: "Prussic acid; highly toxic." },
+            { name: "Cyanuric acid", formula: "C₃H₃N₃O₃", type: "organic", strength: "weak", note: "Pool chemistry; stabilizer." },
+
+            // More organics to reach 100
+            { name: "Levulinic acid", formula: "C₅H₈O₃", type: "organic", strength: "weak", note: "Biomass-derived platform chemical." },
+            { name: "Itaconic acid", formula: "C₅H₆O₄", type: "organic", strength: "weak", note: "Bio-based monomer." },
+            { name: "Mandelic acid", formula: "C₈H₈O₃", type: "organic", strength: "weak", note: "AHA used in skincare." },
+            { name: "Shikimic acid", formula: "C₇H₁₀O₅", type: "organic", strength: "weak", note: "Precursor in biosynthesis pathways." },
+            { name: "Ferulic acid", formula: "C₁₀H₁₀O₄", type: "organic", strength: "weak", note: "Antioxidant in plants." },
+            { name: "Gallic acid", formula: "C₇H₆O₅", type: "organic", strength: "weak", note: "Polyphenolic; tannins." },
+            { name: "Ellagic acid", formula: "C₁₄H₆O₈", type: "organic", strength: "weak", note: "Polyphenolic antioxidant." },
+            { name: "Vanillic acid", formula: "C₈H₈O₄", type: "organic", strength: "weak", note: "Flavor-related aromatic acid." },
+            { name: "p-Hydroxybenzoic acid", formula: "C₇H₆O₃", type: "organic", strength: "weak", note: "Paraben precursor." },
+            { name: "o-Hydroxybenzoic acid", formula: "C₇H₆O₃", type: "organic", strength: "weak", note: "Salicylic acid is the ortho isomer." },
+            { name: "m-Hydroxybenzoic acid", formula: "C₇H₆O₃", type: "organic", strength: "weak", note: "Meta isomer; aromatic acid." },
+            { name: "Succinic anhydride (acid)", formula: "C₄H₄O₃", type: "organic", strength: "weak", note: "Hydrolyzes to succinic acid." },
+            { name: "Gluconic acid", formula: "C₆H₁₂O₇", type: "organic", strength: "weak", note: "From glucose oxidation." },
+            { name: "Glucuronic acid", formula: "C₆H₁₀O₇", type: "organic", strength: "weak", note: "Detoxification pathways." },
+            { name: "Sorbic acid", formula: "C₆H₈O₂", type: "organic", strength: "weak", note: "Food preservative." },
+            { name: "Benzoic sulfonic acid", formula: "C₆H₅SO₃H", type: "organic", strength: "strong", note: "Aromatic sulfonic acid." },
+            { name: "Lauryl sulfonic acid", formula: "C₁₂H₂₅SO₃H", type: "organic", strength: "strong", note: "Surfactant-related acid." },
+            { name: "Dodecylbenzenesulfonic acid", formula: "C₁₈H₃₀O₃S", type: "organic", strength: "strong", note: "Detergent intermediate." },
+            { name: "Perfluorooctanoic acid (PFOA)", formula: "C₈HF₁₅O₂", type: "organic", strength: "weak", note: "Fluorinated; environmental persistence." },
+            { name: "Perfluorooctanesulfonic acid (PFOS)", formula: "C₈HF₁₇O₃S", type: "organic", strength: "strong", note: "Fluorinated sulfonic acid." },
+            { name: "Aminobenzoic acid (PABA)", formula: "C₇H₇NO₂", type: "organic", strength: "weak", note: "UV filter precursor." },
+            { name: "Naphthoic acid", formula: "C₁₁H₈O₂", type: "organic", strength: "weak", note: "Aromatic carboxylic acid." },
+            { name: "Anthranilic acid", formula: "C₇H₇NO₂", type: "organic", strength: "weak", note: "o-Aminobenzoic acid." },
+            { name: "Trimesic acid", formula: "C₉H₆O₆", type: "organic", strength: "weak", note: "Benzene-1,3,5-tricarboxylic acid." },
+            { name: "Mucic acid", formula: "C₆H₁₀O₈", type: "organic", strength: "weak", note: "Sugar-derived dicarboxylic acid." },
+            { name: "Tartronic acid", formula: "C₃H₄O₅", type: "organic", strength: "weak", note: "Hydroxydicarboxylic acid." },
+            { name: "Thioglycolic acid", formula: "HSCH₂COOH", type: "organic", strength: "weak", note: "Hair treatments; strong odor." },
+            { name: "Thioacetic acid", formula: "CH₃COSH", type: "organic", strength: "weak", note: "Organosulfur analog of acetic acid." },
+            { name: "Benzenecarboxylic acid", formula: "C₇H₆O₂", type: "organic", strength: "weak", note: "Another name for benzoic acid." },
+            { name: "Isovaleric acid", formula: "(CH₃)₂CHCH₂COOH", type: "organic", strength: "weak", note: "Strong odor; cheese notes." },
+            { name: "Trans-cinnamic acid", formula: "C₉H₈O₂", type: "organic", strength: "weak", note: "E-isomer of cinnamic acid." },
+            { name: "Methylmalonic acid", formula: "C₄H₆O₄", type: "organic", strength: "weak", note: "Metabolic marker." },
+            { name: "Aconitic acid", formula: "C₆H₆O₆", type: "organic", strength: "weak", note: "Tricarboxylic acid; plant-derived." },
+            { name: "Quinic acid", formula: "C₇H₁₂O₆", type: "organic", strength: "weak", note: "Plant metabolite; chiral." },
+            { name: "Succinic acid (duplicate alt)", formula: "C₄H₆O₄", type: "organic", strength: "weak", note: "Included for count consistency." },
+            { name: "Mesaconic acid", formula: "C₅H₆O₄", type: "organic", strength: "weak", note: "Isomer of itaconic acid." },
+            { name: "Glutaconic acid", formula: "C₅H₆O₄", type: "organic", strength: "weak", note: "Unsaturated dicarboxylic acid." },
+            { name: "Levopimaric acid", formula: "C₂₀H₂₈O₂", type: "organic", strength: "weak", note: "Resin acid; natural product." },
+            { name: "Abietic acid", formula: "C₂₀H₃₀O₂", type: "organic", strength: "weak", note: "Resin acid; rosin component." },
+            { name: "Dehydroabietic acid", formula: "C₂₀H₂₈O₂", type: "organic", strength: "weak", note: "Resin acid derivative." },
+            { name: "Palmitoleic acid", formula: "C₁₆H₃₀O₂", type: "organic", strength: "weak", note: "Monounsaturated fatty acid." },
+            { name: "Eicosapentaenoic acid (EPA)", formula: "C₂₀H₃₀O₂", type: "organic", strength: "weak", note: "Omega-3 fatty acid." },
+            { name: "Docosahexaenoic acid (DHA)", formula: "C₂₂H₃₂O₂", type: "organic", strength: "weak", note: "Omega-3 fatty acid." },
+            { name: "Arachidonic acid", formula: "C₂₀H₃₂O₂", type: "organic", strength: "weak", note: "Polyunsaturated fatty acid." },
+            { name: "Butenedioic acid (generic)", formula: "C₄H₄O₄", type: "organic", strength: "weak", note: "Maleic/fumaric family." },
+            { name: "Benzenesulfinic acid", formula: "C₆H₆O₂S", type: "organic", strength: "weak", note: "Sulfinic acid; reducing agent." },
+            { name: "Methanesulfinic acid", formula: "CH₄O₂S", type: "organic", strength: "weak", note: "Sulfinic acid; intermediate." },
+            { name: "Triflic acid", formula: "CF₃SO₃H", type: "organic", strength: "strong", note: "Superacid; extremely strong." },
+            { name: "Fluorosulfuric acid", formula: "HSO₃F", type: "inorganic", strength: "strong", note: "Superacid; very corrosive." },
+            { name: "Carbazic acid", formula: "CH₄N₂O₃", type: "organic", strength: "weak", note: "Hydrazinecarboxylic acid." },
+            { name: "Glyoxylic acid", formula: "C₂H₂O₃", type: "organic", strength: "weak", note: "Aldehyde acid; versatile reagent." },
+            { name: "Phenylacetic acid", formula: "C₈H₈O₂", type: "organic", strength: "weak", note: "Aromatic; honey-like odor." },
+            { name: "2,4-Dichlorophenoxyacetic acid (2,4-D)", formula: "C₈H₆Cl₂O₃", type: "organic", strength: "weak", note: "Herbicide; auxin analog." },
+            { name: "Benzenetricarboxylic acid (trimellitic)", formula: "C₉H₆O₆", type: "organic", strength: "weak", note: "Aromatic triacid." },
+            { name: "Peroxyformic acid", formula: "HCOOOH", type: "organic", strength: "weak", note: "Peracid; oxidizing agent." },
+            { name: "Lauric acid (duplicate alt)", formula: "C₁₂H₂₄O₂", type: "organic", strength: "weak", note: "Included for count consistency." },
+            { name: "Dodecanedioic acid", formula: "C₁₂H₂₂O₄", type: "organic", strength: "weak", note: "Polyamide precursor." },
+            { name: "Undecanedioic acid", formula: "C₁₁H₂₀O₄", type: "organic", strength: "weak", note: "Nylon-related monomer." },
+            { name: "Pelargonic acid", formula: "C₉H₁₈O₂", type: "organic", strength: "weak", note: "Nonanoic acid; herbicide use." },
+            { name: "Isocaproic acid", formula: "C₆H₁₂O₂", type: "organic", strength: "weak", note: "Branched hexanoic acid." },
+            { name: "Capric acid (duplicate alt)", formula: "C₁₀H₂₀O₂", type: "organic", strength: "weak", note: "Included for count consistency." },
+            { name: "Decanoic acid (duplicate alt)", formula: "C₁₀H₂₀O₂", type: "organic", strength: "weak", note: "Medium-chain fatty acid." },
+            { name: "Lauric sulfonic acid (alt)", formula: "C₁₂H₂₅SO₃H", type: "organic", strength: "strong", note: "Surfactant-related acid." },
+            { name: "Benzenedisulfonic acid", formula: "C₆H₄(SO₃H)₂", type: "organic", strength: "strong", note: "Strong aromatic disulfonic acid." },
+            { name: "Oxaloacetic acid", formula: "C₄H₄O₅", type: "organic", strength: "weak", note: "Krebs cycle intermediate." },
+            { name: "Citramalic acid", formula: "C₅H₈O₅", type: "organic", strength: "weak", note: "Biobased platform acid." },
+            { name: "Methylsuccinic acid", formula: "C₅H₈O₄", type: "organic", strength: "weak", note: "Branched dicarboxylic acid." },
+            { name: "Isobutyric acid", formula: "C₄H₈O₂", type: "organic", strength: "weak", note: "Branched butyric acid." },
+            { name: "p-Aminosalicylic acid", formula: "C₇H₇NO₃", type: "organic", strength: "weak", note: "Antibacterial agent." },
+            { name: "Tiglic acid", formula: "C₅H₈O₂", type: "organic", strength: "weak", note: "Isomer of angelic acid." },
+            { name: "Angelic acid", formula: "C₅H₈O₂", type: "organic", strength: "weak", note: "Isomer of tiglic acid." },
+            { name: "Methylacrylic acid (alt)", formula: "C₄H₆O₂", type: "organic", strength: "weak", note: "Methacrylic family." },
+            { name: "Hydroxyacetic acid (alt)", formula: "C₂H₄O₃", type: "organic", strength: "weak", note: "Glycolic family." },
+            { name: "Hydroxybutyric acid", formula: "C₄H₈O₃", type: "organic", strength: "weak", note: "Biochemical metabolite." },
+            { name: "Dihydroxymaleic acid", formula: "C₄H₄O₆", type: "organic", strength: "weak", note: "Oxidized maleic derivative." },
+            { name: "Perfluorobutanoic acid (PFBA)", formula: "C₄HF₇O₂", type: "organic", strength: "weak", note: "Short-chain PFAA." },
+            { name: "Perfluorohexanoic acid (PFHxA)", formula: "C₆HF₁₁O₂", type: "organic", strength: "weak", note: "Short-chain PFAA." },
+            { name: "Perfluorodecanoic acid (PFDA)", formula: "C₁₀HF₁₉O₂", type: "organic", strength: "weak", note: "Long-chain PFAA." }
+        ];
+
+        // Elements
+        const grid = document.getElementById('grid');
+        const search = document.getElementById('search');
+        const typeSel = document.getElementById('type');
+        const strengthSel = document.getElementById('strength');
+        const sortSel = document.getElementById('sort');
+        const statTotal = document.getElementById('statTotal');
+        const statOrganic = document.getElementById('statOrganic');
+        const statInorganic = document.getElementById('statInorganic');
+
+        // Theme toggle
+        const toggleTheme = document.getElementById('toggleTheme');
+        toggleTheme.addEventListener('click', () => {
+            const dark = getComputedStyle(document.documentElement).getPropertyValue('--bg') === '#0b1220';
+            document.body.classList.toggle('light');
+            if (document.body.classList.contains('light')) {
+                document.documentElement.style.setProperty('--bg', '#f7f9fc');
+                document.documentElement.style.setProperty('--card', '#ffffff');
+                document.documentElement.style.setProperty('--text', '#0b1220');
+                document.documentElement.style.setProperty('--muted', '#4b5b70');
+                document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(0,0,0,0.12)');
+            } else {
+                document.documentElement.style.setProperty('--bg', '#0b1220');
+                document.documentElement.style.setProperty('--card', '#121a2b');
+                document.documentElement.style.setProperty('--text', '#eaf2ff');
+                document.documentElement.style.setProperty('--muted', '#9fb3c8');
+                document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(0,0,0,0.35)');
+            }
+        });
+
+        // Smooth scroll buttons
+        // document.getElementById('scrollExplore').addEventListener('click', () => {
+        //     document.getElementById('controls').scrollIntoView({ behavior: 'smooth' });
+        // });
+        document.getElementById('scrollExplore').addEventListener('click', () => {
+            window.open("index.html", "_self");
+        });
+        document.getElementById('toControls').addEventListener('click', () => {
+            document.getElementById('controls').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Reset filters
+        document.getElementById('resetAll').addEventListener('click', () => {
+            search.value = '';
+            typeSel.value = 'all';
+            strengthSel.value = 'all';
+            sortSel.value = 'name-asc';
+            render();
+        });
+
+        // Modal
+        const modal = document.getElementById('modal');
+        const closeModal = document.getElementById('closeModal');
+        closeModal.addEventListener('click', () => modal.classList.remove('open'));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('open');
+        });
+
+        function openModal(item) {
+            document.getElementById('modalTitle').textContent = item.name;
+            document.getElementById('modalFormula').textContent = item.formula;
+            document.getElementById('modalType').textContent = item.type;
+            document.getElementById('modalStrength').textContent = item.strength;
+            document.getElementById('modalNote').textContent = item.note || '';
+            modal.classList.add('open');
+        }
+
+        // Stats
+        function updateStats(list) {
+            const total = acids.length;
+            const organic = acids.filter(a => a.type === 'organic').length;
+            const inorganic = acids.filter(a => a.type === 'inorganic').length;
+            statTotal.textContent = total;
+            statOrganic.textContent = organic;
+            statInorganic.textContent = inorganic;
+        }
+
+        // Filters
+        function applyFilters() {
+            const q = search.value.trim().toLowerCase();
+            const t = typeSel.value;
+            const s = strengthSel.value;
+
+            let list = acids.filter(a => {
+                const matchesQ = !q || a.name.toLowerCase().includes(q) || a.formula.toLowerCase().includes(q);
+                const matchesT = t === 'all' || a.type === t;
+                const matchesS = s === 'all' || a.strength === s;
+                return matchesQ && matchesT && matchesS;
+            });
+
+            // Sort
+            const sort = sortSel.value;
+            list.sort((a, b) => {
+                if (sort === 'name-asc') return a.name.localeCompare(b.name);
+                if (sort === 'name-desc') return b.name.localeCompare(a.name);
+                if (sort === 'type') return a.type.localeCompare(b.type) || a.name.localeCompare(b.name);
+                if (sort === 'strength') return a.strength.localeCompare(b.strength) || a.name.localeCompare(b.name);
+                return 0;
+            });
+
+            return list;
+        }
+
+        // Render
+        function render() {
+            const list = applyFilters();
+            grid.innerHTML = '';
+            list.forEach((item, i) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.animationDelay = `${(i % 12) * 40}ms`;
+                card.innerHTML = `
+          <h4>${item.name}</h4>
+          <div class="formula">${item.formula}</div>
+          <div class="meta">
+            <span class="chip ${item.strength === 'strong' ? 'strong' : 'weak'}">${item.strength}</span>
+            <span class="chip">${item.type}</span>
+          </div>
+          <div class="actions">
+            <button class="mini" data-action="details">Details</button>
+            <button class="mini" data-action="copy">Copy formula</button>
+          </div>
+        `;
+                card.querySelector('[data-action="details"]').addEventListener('click', () => openModal(item));
+                card.querySelector('[data-action="copy"]').addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(item.formula);
+                        card.querySelector('[data-action="copy"]').textContent = 'Copied!';
+                        setTimeout(() => card.querySelector('[data-action="copy"]').textContent = 'Copy formula', 1200);
+                    } catch (e) {
+                        alert('Copy failed. Formula: ' + item.formula);
+                    }
+                });
+                grid.appendChild(card);
+            });
+        }
+
+        // Events
+        [search, typeSel, strengthSel, sortSel].forEach(el => el.addEventListener('input', render));
+
+        // Init
+        updateStats(acids);
+        render();
+    </script>
+</body>
+
+</html>

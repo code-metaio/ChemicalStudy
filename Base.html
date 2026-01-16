@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chemistry Bases — Dynamic Responsive List</title>
+    <link rel="shortcut icon" href="hyth.png" type="hyth">
+    <style>
+        :root {
+            --bg: #0b1220;
+            --card: #121a2b;
+            --accent: #7cffc4;
+            --text: #eaf2ff;
+            --muted: #9fb3c8;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, Segoe UI, system-ui, -apple-system, Arial, sans-serif;
+            background:
+                radial-gradient(1200px 600px at 10% -10%, #0e1a33 0%, #0b1220 60%, #0b1220 100%),
+                linear-gradient(180deg, #0b1220 0%, #0b1220 100%);
+            color: var(--text);
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: saturate(1.2) blur(10px);
+            background: rgba(11, 18, 32, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), #b7ffd9);
+            box-shadow: 0 6px 18px rgba(124, 255, 196, 0.35);
+        }
+
+        .brand small {
+            color: var(--muted);
+            font-weight: 500
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding: 24px 20px 8px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(24px, 4vw, 40px);
+            line-height: 1.15;
+            margin: 0 0 10px;
+            background: linear-gradient(90deg, #eaf2ff 0%, #7cffc4 60%, #eaf2ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+            margin: 0
+        }
+
+        .hero .cta {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease, border-color .2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.12)
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--accent), #b7ffd9);
+            color: #06121f;
+            border: none;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(124, 255, 196, 0.35);
+        }
+
+        .btn.primary:hover {
+            transform: translateY(-2px) scale(1.02)
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat h3 {
+            margin: 0;
+            font-size: 18px
+        }
+
+        .stat p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        .controls {
+            max-width: 1200px;
+            margin: 16px auto;
+            padding: 0 20px 20px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .field .tag {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8px 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width:1100px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        @media (max-width:800px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media (max-width:520px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: var(--shadow);
+            transform: translateY(8px);
+            opacity: 0;
+            animation: reveal .6s ease forwards;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -40% -40% auto auto;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(closest-side, rgba(124, 255, 196, 0.25), transparent 70%);
+            transform: rotate(25deg);
+        }
+
+        .card:hover {
+            transform: translateY(0);
+            border-color: rgba(124, 255, 196, 0.35)
+        }
+
+        .card h4 {
+            margin: 0 0 6px;
+            font-size: 16px
+        }
+
+        .formula {
+            color: #7cffc4;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 13px
+        }
+
+        .meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px
+        }
+
+        .chip {
+            font-size: 12px;
+            padding: 6px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .chip.strong {
+            border-color: rgba(124, 255, 196, 0.6);
+            color: #d9ffe9
+        }
+
+        .chip.weak {
+            border-color: rgba(124, 255, 196, 0.25);
+            color: #cfe9dc
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px
+        }
+
+        .mini {
+            font-size: 12px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            cursor: pointer
+        }
+
+        .mini:hover {
+            background: rgba(255, 255, 255, 0.12)
+        }
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(11, 18, 32, 0.6);
+            backdrop-filter: saturate(1.2) blur(10px);
+            padding: 18px 20px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            place-items: center;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 50;
+            padding: 20px;
+        }
+
+        .modal.open {
+            display: grid
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 560px;
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .modal-card h3 {
+            margin: 0 0 8px
+        }
+
+        .modal-card p {
+            color: var(--muted);
+            margin: 6px 0
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 12px
+        }
+
+        @keyframes reveal {
+            to {
+                transform: translateY(0);
+                opacity: 1
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav">
+            <div class="brand">
+                <div class="logo"></div>
+                <div>
+                    Chemistry Atlas<br />
+                    <small>100 Bases — Explore, Filter, Learn</small>
+                </div>
+            </div>
+            <div class="cta">
+                <button class="btn" id="toggleTheme">🌙 Toggle theme</button>
+                <button class="btn primary" id="scrollExplore">Go to Home Page</button>
+            </div>
+        </div>
+        <div class="hero">
+            <div>
+                <h1>Explore 100 Chemistry Bases in a Dynamic, Responsive Layout</h1>
+                <p>Search, filter, and sort organic and inorganic bases—complete with formulas and strength tags.</p>
+                <div class="cta">
+                    <button class="btn primary" id="toControls">Start exploring</button>
+                    <button class="btn" id="resetAll">Reset filters</button>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <h3>Total Bases</h3>
+                    <p id="statTotal">100</p>
+                </div>
+                <div class="stat">
+                    <h3>Organic</h3>
+                    <p id="statOrganic">—</p>
+                </div>
+                <div class="stat">
+                    <h3>Inorganic</h3>
+                    <p id="statInorganic">—</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="controls" id="controls">
+        <div class="field">
+            <span class="tag">Search</span>
+            <input type="text" id="search" placeholder="Search by name or formula (e.g., NaOH, ammonia)" />
+        </div>
+        <div class="field">
+            <span class="tag">Type</span>
+            <select id="type">
+                <option value="all">All</option>
+                <option value="organic">Organic</option>
+                <option value="inorganic">Inorganic</option>
+            </select>
+        </div>
+        <div class="field">
+            <span class="tag">Strength</span>
+            <select id="strength">
+                <option value="all">All</option>
+                <option value="strong">Strong</option>
+                <option value="weak">Weak</option>
+            </select>
+        </div>
+        <div class="field">
+            <span class="tag">Sort</span>
+            <select id="sort">
+                <option value="name-asc">Name (A→Z)</option>
+                <option value="name-desc">Name (Z→A)</option>
+                <option value="type">Type</option>
+                <option value="strength">Strength</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="grid" id="grid"></section>
+
+    <footer>
+        © 2026 Kamil Mirza. Clean, modern chemistry experience.
+    </footer>
+
+    <div class="modal" id="modal">
+        <div class="modal-card">
+            <h3 id="modalTitle">Base name</h3>
+            <p><strong>Formula:</strong> <span id="modalFormula"></span></p>
+            <p><strong>Type:</strong> <span id="modalType"></span></p>
+            <p><strong>Strength:</strong> <span id="modalStrength"></span></p>
+            <p id="modalNote"></p>
+            <div class="modal-actions">
+                <button class="btn mini" id="closeModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bases = [
+            // Inorganic — strong hydroxides
+            { name: "Sodium hydroxide", formula: "NaOH", type: "inorganic", strength: "strong", note: "Caustic soda; widely used strong base." },
+            { name: "Potassium hydroxide", formula: "KOH", type: "inorganic", strength: "strong", note: "Strong base; soap making and batteries." },
+            { name: "Lithium hydroxide", formula: "LiOH", type: "inorganic", strength: "strong", note: "CO₂ scrubbing; battery industry." },
+            { name: "Calcium hydroxide", formula: "Ca(OH)₂", type: "inorganic", strength: "strong", note: "Slaked lime; water treatment." },
+            { name: "Barium hydroxide", formula: "Ba(OH)₂", type: "inorganic", strength: "strong", note: "Strong base; analytical chemistry." },
+            { name: "Strontium hydroxide", formula: "Sr(OH)₂", type: "inorganic", strength: "strong", note: "Strong base; less common." },
+            { name: "Cesium hydroxide", formula: "CsOH", type: "inorganic", strength: "strong", note: "Very strong base; reactive." },
+            { name: "Rubidium hydroxide", formula: "RbOH", type: "inorganic", strength: "strong", note: "Strong base; highly reactive." },
+            { name: "Magnesium hydroxide", formula: "Mg(OH)₂", type: "inorganic", strength: "weak", note: "Milk of magnesia; weakly basic." },
+            { name: "Aluminum hydroxide", formula: "Al(OH)₃", type: "inorganic", strength: "weak", note: "Amphoteric; antacid use." },
+
+            // Inorganic — oxides & hydrides
+            { name: "Sodium oxide", formula: "Na₂O", type: "inorganic", strength: "strong", note: "Basic oxide; reacts with water to NaOH." },
+            { name: "Calcium oxide", formula: "CaO", type: "inorganic", strength: "strong", note: "Quicklime; forms Ca(OH)₂ with water." },
+            { name: "Magnesium oxide", formula: "MgO", type: "inorganic", strength: "weak", note: "Basic oxide; antacid." },
+            { name: "Sodium hydride", formula: "NaH", type: "inorganic", strength: "strong", note: "Powerful base; hydride donor." },
+            { name: "Potassium hydride", formula: "KH", type: "inorganic", strength: "strong", note: "Very strong base; reactive." },
+            { name: "Calcium hydride", formula: "CaH₂", type: "inorganic", strength: "strong", note: "Strong base; hydrogen source." },
+
+            // Inorganic — carbonates & bicarbonates
+            { name: "Sodium carbonate", formula: "Na₂CO₃", type: "inorganic", strength: "weak", note: "Washing soda; moderately basic." },
+            { name: "Potassium carbonate", formula: "K₂CO₃", type: "inorganic", strength: "weak", note: "Glass and soap production." },
+            { name: "Calcium carbonate", formula: "CaCO₃", type: "inorganic", strength: "weak", note: "Limestone; mild base." },
+            { name: "Sodium bicarbonate", formula: "NaHCO₃", type: "inorganic", strength: "weak", note: "Baking soda; buffer." },
+            { name: "Potassium bicarbonate", formula: "KHCO₃", type: "inorganic", strength: "weak", note: "Food additive; buffer." },
+
+            // Inorganic — phosphates & silicates
+            { name: "Sodium phosphate (tribasic)", formula: "Na₃PO₄", type: "inorganic", strength: "weak", note: "Cleaning agents; buffer." },
+            { name: "Disodium hydrogen phosphate", formula: "Na₂HPO₄", type: "inorganic", strength: "weak", note: "Buffer component." },
+            { name: "Sodium metasilicate", formula: "Na₂SiO₃", type: "inorganic", strength: "strong", note: "Detergents; corrosion inhibition." },
+            { name: "Sodium aluminate", formula: "NaAlO₂", type: "inorganic", strength: "strong", note: "Water treatment; basic." },
+
+            // Inorganic — amines & ammonia derivatives
+            { name: "Ammonia", formula: "NH₃", type: "inorganic", strength: "weak", note: "Common weak base; household cleaner." },
+            { name: "Ammonium hydroxide", formula: "NH₄OH", type: "inorganic", strength: "weak", note: "Aqueous ammonia; weak base." },
+            { name: "Hydrazine", formula: "N₂H₄", type: "inorganic", strength: "weak", note: "Reducing agent; basic." },
+
+            // Organic — alkoxides (strong)
+            { name: "Sodium methoxide", formula: "NaOCH₃", type: "organic", strength: "strong", note: "Strong base; transesterification." },
+            { name: "Sodium ethoxide", formula: "NaOC₂H₅", type: "organic", strength: "strong", note: "Strong base; Claisen reactions." },
+            { name: "Potassium tert-butoxide", formula: "KOtBu", type: "organic", strength: "strong", note: "Bulky strong base; E2 eliminations." },
+            { name: "Sodium tert-butoxide", formula: "NaOtBu", type: "organic", strength: "strong", note: "Strong, hindered base." },
+            { name: "Lithium diisopropylamide (LDA)", formula: "(iPr)₂NLi", type: "organic", strength: "strong", note: "Non-nucleophilic strong base." },
+
+            // Organic — amines (weak to strong)
+            { name: "Methylamine", formula: "CH₃NH₂", type: "organic", strength: "weak", note: "Primary amine; basic." },
+            { name: "Ethylamine", formula: "C₂H₅NH₂", type: "organic", strength: "weak", note: "Primary amine; basic." },
+            { name: "Propylamine", formula: "C₃H₇NH₂", type: "organic", strength: "weak", note: "Primary amine." },
+            { name: "Butylamine", formula: "C₄H₉NH₂", type: "organic", strength: "weak", note: "Primary amine." },
+            { name: "Aniline", formula: "C₆H₅NH₂", type: "organic", strength: "weak", note: "Aromatic amine; weaker base." },
+            { name: "Pyridine", formula: "C₅H₅N", type: "organic", strength: "weak", note: "Heteroaromatic base; solvent." },
+            { name: "Imidazole", formula: "C₃H₄N₂", type: "organic", strength: "weak", note: "Heterocycle; buffer component." },
+            { name: "Morpholine", formula: "C₄H₉NO", type: "organic", strength: "weak", note: "Cyclic amine; corrosion inhibitor." },
+            { name: "Piperidine", formula: "C₅H₁₁N", type: "organic", strength: "weak", note: "Cyclic secondary amine." },
+            { name: "Triethylamine", formula: "(C₂H₅)₃N", type: "organic", strength: "weak", note: "Common base; catalyst." },
+            { name: "Diethylamine", formula: "(C₂H₅)₂NH", type: "organic", strength: "weak", note: "Secondary amine." },
+            { name: "Dimethylamine", formula: "(CH₃)₂NH", type: "organic", strength: "weak", note: "Secondary amine." },
+            { name: "Trimethylamine", formula: "(CH₃)₃N", type: "organic", strength: "weak", note: "Tertiary amine; fishy odor." },
+            { name: "Diisopropylamine", formula: "(iPr)₂NH", type: "organic", strength: "weak", note: "Secondary amine; precursor to LDA." },
+            { name: "Diisopropylethylamine (Hünig’s base)", formula: "(iPr)₂NEt", type: "organic", strength: "weak", note: "Non-nucleophilic tertiary amine." },
+            { name: "Dicyclohexylamine", formula: "(C₆H₁₁)₂NH", type: "organic", strength: "weak", note: "Bulky secondary amine." },
+            { name: "Benzylamine", formula: "C₆H₅CH₂NH₂", type: "organic", strength: "weak", note: "Primary amine; mild base." },
+            { name: "Ethylenediamine", formula: "NH₂CH₂CH₂NH₂", type: "organic", strength: "weak", note: "Bidentate ligand; base." },
+            { name: "Diethylenetriamine", formula: "H₂NCH₂CH₂NHCH₂CH₂NH₂", type: "organic", strength: "weak", note: "Polyamine; chelating." },
+            { name: "Triethanolamine (TEA)", formula: "N(CH₂CH₂OH)₃", type: "organic", strength: "weak", note: "Buffer; surfactant formulations." },
+            { name: "Monoethanolamine (MEA)", formula: "HOCH₂CH₂NH₂", type: "organic", strength: "weak", note: "Gas treatment; buffer." },
+            { name: "Diethanolamine (DEA)", formula: "(HOCH₂CH₂)₂NH", type: "organic", strength: "weak", note: "Surfactant; buffer." },
+
+            // Organic — amidines & guanidines (strong)
+            { name: "Guanidine", formula: "CH₅N₃", type: "organic", strength: "strong", note: "Strong organic base; pKa of conjugate acid ~13.6." },
+            { name: "1,8-Bis(dimethylamino)naphthalene (Proton sponge)", formula: "C₁₄H₁₈N₂", type: "organic", strength: "strong", note: "Very strong, sterically hindered base." },
+            { name: "DBU (1,8-Diazabicyclo[5.4.0]undec-7-ene)", formula: "C₉H₁₆N₂", type: "organic", strength: "strong", note: "Non-nucleophilic strong base." },
+            { name: "DBN (1,5-Diazabicyclo[4.3.0]non-5-ene)", formula: "C₇H₁₀N₂", type: "organic", strength: "strong", note: "Strong bicyclic base." },
+            { name: "TBD (Triazabicyclodecene)", formula: "C₇H₁₀N₃", type: "organic", strength: "strong", note: "Superbase class; organocatalysis." },
+            { name: "Tetramethylguanidine (TMG)", formula: "C₅H₁₃N₃", type: "organic", strength: "strong", note: "Strong, non-nucleophilic base." },
+            { name: "Di-tert-butyl dicarbonate base (Boc-related)", formula: "—", type: "organic", strength: "weak", note: "Used with bases; protective chemistry." },
+
+            // Organic — phosphazene superbases
+            { name: "t-Bu-P4 (phosphazene superbase)", formula: "—", type: "organic", strength: "strong", note: "Extremely strong non-nucleophilic base." },
+            { name: "P2-Et phosphazene", formula: "—", type: "organic", strength: "strong", note: "Superbase; deprotonation chemistry." },
+
+            // Buffers (organic zwitterionic)
+            { name: "Tris (tris(hydroxymethyl)aminomethane)", formula: "C₄H₁₁NO₃", type: "organic", strength: "weak", note: "Biological buffer; pH ~7–9." },
+            { name: "HEPES", formula: "C₈H₁₈N₂O₄S", type: "organic", strength: "weak", note: "Zwitterionic buffer; biology." },
+            { name: "MOPS", formula: "C₇H₁₅NO₄S", type: "organic", strength: "weak", note: "Good buffering capacity near neutral pH." },
+            { name: "TAPS", formula: "C₇H₁₇NO₆S", type: "organic", strength: "weak", note: "Biological buffer." },
+            { name: "TES", formula: "C₆H₁₅NO₆S", type: "organic", strength: "weak", note: "Zwitterionic buffer." },
+            { name: "Bicine", formula: "C₆H₁₃NO₄", type: "organic", strength: "weak", note: "Buffer; biochemical applications." },
+            { name: "PIPES", formula: "C₈H₁₈N₂O₆S₂", type: "organic", strength: "weak", note: "Zwitterionic buffer." },
+            { name: "MES", formula: "C₆H₁₃NO₄S", type: "organic", strength: "weak", note: "Buffer near pH 6." },
+
+            // Organic — heterocycles & special
+            { name: "Quinoline", formula: "C₉H₇N", type: "organic", strength: "weak", note: "Heteroaromatic base." },
+            { name: "Isoquinoline", formula: "C₉H₇N", type: "organic", strength: "weak", note: "Heteroaromatic base." },
+            { name: "2,6-Lutidine", formula: "C₇H₉N", type: "organic", strength: "weak", note: "Sterically hindered pyridine." },
+            { name: "4-Dimethylaminopyridine (DMAP)", formula: "C₇H₁₀N₂", type: "organic", strength: "weak", note: "Nucleophilic catalyst; basic." },
+            { name: "N-Methylimidazole", formula: "C₄H₆N₂", type: "organic", strength: "weak", note: "Heterocycle; base." },
+            { name: "Histidine (as base)", formula: "C₆H₉N₃O₂", type: "organic", strength: "weak", note: "Amino acid; imidazole side chain." },
+
+            // Inorganic — amides & nitrides
+            { name: "Sodium amide", formula: "NaNH₂", type: "inorganic", strength: "strong", note: "Very strong base; deprotonations." },
+            { name: "Potassium amide", formula: "KNH₂", type: "inorganic", strength: "strong", note: "Strong base; reactive." },
+            { name: "Lithium amide", formula: "LiNH₂", type: "inorganic", strength: "strong", note: "Strong base; organolithium chemistry." },
+            { name: "Calcium nitride (basic behavior)", formula: "Ca₃N₂", type: "inorganic", strength: "strong", note: "Hydrolyzes to ammonia; basic." },
+
+            // Organic — carboxylate salts (weak bases)
+            { name: "Sodium acetate", formula: "CH₃COONa", type: "organic", strength: "weak", note: "Buffer component; weak base." },
+            { name: "Sodium benzoate", formula: "C₆H₅COONa", type: "organic", strength: "weak", note: "Preservative; weak base." },
+            { name: "Sodium citrate", formula: "C₆H₅O₇Na₃", type: "organic", strength: "weak", note: "Buffer; chelating agent." },
+            { name: "Sodium lactate", formula: "C₃H₅O₃Na", type: "organic", strength: "weak", note: "Buffer; medical/food use." },
+            { name: "Sodium formate", formula: "HCOONa", type: "organic", strength: "weak", note: "Weak base; de-icing agent." },
+
+            // Organic — alkyl lithium (very strong bases)
+            { name: "n-Butyllithium", formula: "C₄H₉Li", type: "organic", strength: "strong", note: "Pyrophoric; extremely strong base." },
+            { name: "sec-Butyllithium", formula: "C₄H₉Li", type: "organic", strength: "strong", note: "Strong base; organolithium." },
+            { name: "t-Butyllithium", formula: "C₄H₉Li", type: "organic", strength: "strong", note: "Very strong, hindered base." },
+
+            // Organic — alkyl magnesium (Grignard, basic behavior)
+            { name: "Methylmagnesium bromide", formula: "CH₃MgBr", type: "organic", strength: "strong", note: "Basic and nucleophilic reagent." },
+            { name: "Phenylmagnesium bromide", formula: "C₆H₅MgBr", type: "organic", strength: "strong", note: "Basic organometallic." },
+
+            // Inorganic — basic salts & oxoanions
+            { name: "Sodium hydroxide monohydrate (aq)", formula: "NaOH·H₂O", type: "inorganic", strength: "strong", note: "Aqueous strong base." },
+            { name: "Sodium silicate (water glass)", formula: "Na₂SiO₃", type: "inorganic", strength: "strong", note: "Basic builder in detergents." },
+            { name: "Sodium borate (borax)", formula: "Na₂B₄O₇·10H₂O", type: "inorganic", strength: "weak", note: "Buffering; mild base." },
+            { name: "Sodium percarbonate (basic solution)", formula: "2Na₂CO₃·3H₂O₂", type: "inorganic", strength: "weak", note: "Releases carbonate; mildly basic." },
+
+            // Organic — tertiary amines (common)
+            { name: "N,N-Diisopropylmethylamine", formula: "(iPr)₂NCH₃", type: "organic", strength: "weak", note: "Sterically hindered base." },
+            { name: "N-Methylpiperidine", formula: "C₆H₁₃N", type: "organic", strength: "weak", note: "Cyclic tertiary amine." },
+            { name: "N-Methylmorpholine", formula: "C₅H₁₁NO", type: "organic", strength: "weak", note: "Cyclic tertiary amine." },
+            { name: "Quinuclidine", formula: "C₇H₁₃N", type: "organic", strength: "weak", note: "Bicyclic tertiary amine." },
+
+            // Organic — superbases & related
+            { name: "Sodium hexamethyldisilazide (NaHMDS)", formula: "NaN(SiMe₃)₂", type: "organic", strength: "strong", note: "Non-nucleophilic strong base." },
+            { name: "Potassium hexamethyldisilazide (KHMDS)", formula: "KN(SiMe₃)₂", type: "organic", strength: "strong", note: "Strong, hindered base." },
+            { name: "Lithium hexamethyldisilazide (LiHMDS)", formula: "LiN(SiMe₃)₂", type: "organic", strength: "strong", note: "Strong, non-nucleophilic base." },
+
+            // Organic — bicarbonate/carbonate buffers (weak bases)
+            { name: "Potassium acetate", formula: "CH₃COOK", type: "organic", strength: "weak", note: "Weak base; buffer." },
+            { name: "Potassium benzoate", formula: "C₆H₅COOK", type: "organic", strength: "weak", note: "Preservative; weak base." },
+            { name: "Potassium citrate", formula: "C₆H₅O₇K₃", type: "organic", strength: "weak", note: "Buffer; chelator." },
+
+            // Inorganic — mixed hydroxides
+            { name: "Zinc hydroxide", formula: "Zn(OH)₂", type: "inorganic", strength: "weak", note: "Amphoteric; weakly basic." },
+            { name: "Copper(II) hydroxide", formula: "Cu(OH)₂", type: "inorganic", strength: "weak", note: "Weak base; insoluble." },
+            { name: "Iron(III) hydroxide", formula: "Fe(OH)₃", type: "inorganic", strength: "weak", note: "Amphoteric behavior." },
+
+            // Organic — bicyclic amidines
+            { name: "2,2,6,6-Tetramethylpiperidine (TMP)", formula: "C₉H₁₉N", type: "organic", strength: "weak", note: "Sterically hindered amine base." },
+            { name: "TMP base (LiTMP)", formula: "LiC₉H₁₈N", type: "organic", strength: "strong", note: "Strong, hindered base." },
+
+            // Organic — buffers continued
+            { name: "CAPS", formula: "C₁₀H₂₁NO₃S", type: "organic", strength: "weak", note: "Zwitterionic buffer." },
+            { name: "CAPSO", formula: "C₁₀H₂₁NO₄S", type: "organic", strength: "weak", note: "Buffer near alkaline pH." },
+            { name: "TMAH (Tetramethylammonium hydroxide)", formula: "(CH₃)₄NOH", type: "organic", strength: "strong", note: "Strong quaternary ammonium base." },
+            { name: "TEAOH (Triethylammonium hydroxide)", formula: "(C₂H₅)₃NOH", type: "organic", strength: "strong", note: "Strong base; phase-transfer." },
+
+            // Organic — amides & ureas (weakly basic sites)
+            { name: "Urea (basic site)", formula: "CH₄N₂O", type: "organic", strength: "weak", note: "Weakly basic carbonyl-adjacent nitrogens." },
+            { name: "Acetamide (basic site)", formula: "CH₃CONH₂", type: "organic", strength: "weak", note: "Very weak base." },
+
+            // Inorganic — hydroxides extended
+            { name: "Nickel(II) hydroxide", formula: "Ni(OH)₂", type: "inorganic", strength: "weak", note: "Battery materials; weak base." },
+            { name: "Manganese(II) hydroxide", formula: "Mn(OH)₂", type: "inorganic", strength: "weak", note: "Weak base; insoluble." },
+            { name: "Cobalt(II) hydroxide", formula: "Co(OH)₂", type: "inorganic", strength: "weak", note: "Weak base; insoluble." },
+
+            // Organic — special strong bases
+            { name: "Sodium ethylsulfinylmethanide (SEM)", formula: "—", type: "organic", strength: "strong", note: "Specialized strong base." },
+            { name: "Potassium carbonate in methanol (basic medium)", formula: "K₂CO₃/MeOH", type: "organic", strength: "weak", note: "Common mild base system." },
+
+            // Organic — more amines
+            { name: "Isopropylamine", formula: "(CH₃)₂CHNH₂", type: "organic", strength: "weak", note: "Primary amine." },
+            { name: "tert-Butylamine", formula: "(CH₃)₃CNH₂", type: "organic", strength: "weak", note: "Primary amine; hindered." },
+            { name: "Cyclohexylamine", formula: "C₆H₁₁NH₂", type: "organic", strength: "weak", note: "Primary amine." },
+            { name: "Di-n-propylamine", formula: "(C₃H₇)₂NH", type: "organic", strength: "weak", note: "Secondary amine." },
+            { name: "Tri-n-butylamine", formula: "(C₄H₉)₃N", type: "organic", strength: "weak", note: "Tertiary amine." },
+
+            // Organic — carbanion bases (general)
+            { name: "Sodium acetylide (generic)", formula: "NaC≡CR", type: "organic", strength: "strong", note: "Strong base; terminal alkyne deprotonation." },
+            { name: "Potassium acetylide (generic)", formula: "KC≡CR", type: "organic", strength: "strong", note: "Strong base; alkyne chemistry." },
+
+            // Inorganic — basic oxides continued
+            { name: "Sodium peroxide (basic solution)", formula: "Na₂O₂", type: "inorganic", strength: "strong", note: "Generates basic solutions." },
+            { name: "Potassium oxide", formula: "K₂O", type: "inorganic", strength: "strong", note: "Basic oxide; forms KOH with water." },
+
+            // Organic — ammonium salts (basic conjugate)
+            { name: "Triethylammonium acetate", formula: "(Et)₃NH⁺ OAc⁻", type: "organic", strength: "weak", note: "Buffer pair; weak base behavior." },
+            { name: "Pyridinium acetate (conjugate pair)", formula: "PyH⁺ OAc⁻", type: "organic", strength: "weak", note: "Buffer systems." },
+
+            // Organic — more buffers
+            { name: "ACES", formula: "C₆H₁₃NO₅S", type: "organic", strength: "weak", note: "Biological buffer." },
+            { name: "ADA", formula: "C₆H₁₁NO₄", type: "organic", strength: "weak", note: "Buffer near neutral pH." },
+            { name: "AMPSO", formula: "C₇H₁₇NO₄S", type: "organic", strength: "weak", note: "Zwitterionic buffer." },
+
+            // Inorganic — hydroxides wrap-up
+            { name: "Silver hydroxide", formula: "AgOH", type: "inorganic", strength: "weak", note: "Unstable; weakly basic." },
+            { name: "Lead(II) hydroxide", formula: "Pb(OH)₂", type: "inorganic", strength: "weak", note: "Weak base; low solubility." },
+            { name: "Tin(II) hydroxide", formula: "Sn(OH)₂", type: "inorganic", strength: "weak", note: "Weak base; amphoteric tendencies." },
+
+            // Organic — final strong bases
+            { name: "Sodium hydride in DMSO (base system)", formula: "NaH/DMSO", type: "organic", strength: "strong", note: "Very strong deprotonation system." },
+            { name: "Potassium tert-butoxide in THF", formula: "KOtBu/THF", type: "organic", strength: "strong", note: "Common strong base system." }
+        ];
+
+        const grid = document.getElementById('grid');
+        const search = document.getElementById('search');
+        const typeSel = document.getElementById('type');
+        const strengthSel = document.getElementById('strength');
+        const sortSel = document.getElementById('sort');
+        const statTotal = document.getElementById('statTotal');
+        const statOrganic = document.getElementById('statOrganic');
+        const statInorganic = document.getElementById('statInorganic');
+
+        const toggleTheme = document.getElementById('toggleTheme');
+        toggleTheme.addEventListener('click', () => {
+            document.body.classList.toggle('light');
+            if (document.body.classList.contains('light')) {
+                document.documentElement.style.setProperty('--bg', '#f7f9fc');
+                document.documentElement.style.setProperty('--card', '#ffffff');
+                document.documentElement.style.setProperty('--text', '#0b1220');
+                document.documentElement.style.setProperty('--muted', '#4b5b70');
+                document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(0,0,0,0.12)');
+            } else {
+                document.documentElement.style.setProperty('--bg', '#0b1220');
+                document.documentElement.style.setProperty('--card', '#121a2b');
+                document.documentElement.style.setProperty('--text', '#eaf2ff');
+                document.documentElement.style.setProperty('--muted', '#9fb3c8');
+                document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(0,0,0,0.35)');
+            }
+        });
+
+        document.getElementById('scrollExplore').addEventListener('click', () => {
+            window.open("index.html", "_self");
+        });
+        // document.getElementById('scrollExplore').addEventListener('click', () => {
+        //     document.getElementById('controls').scrollIntoView({ behavior: 'smooth' });
+        // });
+        document.getElementById('toControls').addEventListener('click', () => {
+            document.getElementById('controls').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('resetAll').addEventListener('click', () => {
+            search.value = '';
+            typeSel.value = 'all';
+            strengthSel.value = 'all';
+            sortSel.value = 'name-asc';
+            render();
+        });
+
+        const modal = document.getElementById('modal');
+        const closeModal = document.getElementById('closeModal');
+        closeModal.addEventListener('click', () => modal.classList.remove('open'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+
+        function openModal(item) {
+            document.getElementById('modalTitle').textContent = item.name;
+            document.getElementById('modalFormula').textContent = item.formula;
+            document.getElementById('modalType').textContent = item.type;
+            document.getElementById('modalStrength').textContent = item.strength;
+            document.getElementById('modalNote').textContent = item.note || '';
+            modal.classList.add('open');
+        }
+
+        function updateStats() {
+            const total = bases.length;
+            const organic = bases.filter(a => a.type === 'organic').length;
+            const inorganic = bases.filter(a => a.type === 'inorganic').length;
+            statTotal.textContent = total;
+            statOrganic.textContent = organic;
+            statInorganic.textContent = inorganic;
+        }
+
+        function applyFilters() {
+            const q = search.value.trim().toLowerCase();
+            const t = typeSel.value;
+            const s = strengthSel.value;
+
+            let list = bases.filter(a => {
+                const matchesQ = !q || a.name.toLowerCase().includes(q) || a.formula.toLowerCase().includes(q);
+                const matchesT = t === 'all' || a.type === t;
+                const matchesS = s === 'all' || a.strength === s;
+                return matchesQ && matchesT && matchesS;
+            });
+
+            const sort = sortSel.value;
+            list.sort((a, b) => {
+                if (sort === 'name-asc') return a.name.localeCompare(b.name);
+                if (sort === 'name-desc') return b.name.localeCompare(a.name);
+                if (sort === 'type') return a.type.localeCompare(b.type) || a.name.localeCompare(b.name);
+                if (sort === 'strength') return a.strength.localeCompare(b.strength) || a.name.localeCompare(b.name);
+                return 0;
+            });
+
+            return list;
+        }
+
+        function render() {
+            const list = applyFilters();
+            grid.innerHTML = '';
+            list.forEach((item, i) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.animationDelay = `${(i % 12) * 40}ms`;
+                card.innerHTML = `
+          <h4>${item.name}</h4>
+          <div class="formula">${item.formula}</div>
+          <div class="meta">
+            <span class="chip ${item.strength === 'strong' ? 'strong' : 'weak'}">${item.strength}</span>
+            <span class="chip">${item.type}</span>
+          </div>
+          <div class="actions">
+            <button class="mini" data-action="details">Details</button>
+            <button class="mini" data-action="copy">Copy formula</button>
+          </div>
+        `;
+                card.querySelector('[data-action="details"]').addEventListener('click', () => openModal(item));
+                card.querySelector('[data-action="copy"]').addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(item.formula);
+                        const btn = card.querySelector('[data-action="copy"]');
+                        btn.textContent = 'Copied!';
+                        setTimeout(() => btn.textContent = 'Copy formula', 1200);
+                    } catch (e) {
+                        alert('Copy failed. Formula: ' + item.formula);
+                    }
+                });
+                grid.appendChild(card);
+            });
+        }
+
+        [search, typeSel, strengthSel, sortSel].forEach(el => el.addEventListener('input', render));
+
+        updateStats();
+        render();
+    </script>
+</body>
+
+</html>

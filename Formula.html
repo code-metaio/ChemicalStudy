@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Molecules Showcase</title>
+    <link rel="shortcut icon" href="hyth.png" type="hyth">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            text-align: center;
+            color: #7cf0ff;
+            text-shadow: 0 0 12px rgba(124, 240, 255, .6);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, .4);
+            border-color: #7cf0ff;
+        }
+
+        .name {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .scientific {
+            font-size: .95em;
+            color: #cfe6ff;
+            margin-bottom: 8px;
+        }
+
+        .formula {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #ffd43b;
+            margin-bottom: 10px;
+        }
+
+        .desc {
+            font-size: .9em;
+            color: #ddd;
+            line-height: 1.4;
+            opacity: 0;
+            max-height: 0;
+            transition: .3s ease;
+        }
+
+        .card:hover .desc {
+            opacity: 1;
+            max-height: 200px;
+            margin-top: 10px;
+        }
+         nav {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    nav a button {
+      background: #00d9ff;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a button:hover {
+      background: #fff;
+      color: #00d9ff;
+      transform: scale(1.05);
+    }
+
+    </style>
+</head>
+
+<body>
+    <h1>Chemistry Compounds & Formulas</h1>
+    <nav>
+    <a href="index.html"><button>Go to Home Page</button></a>
+  </nav>
+    <div class="grid" id="grid"></div>
+
+    <script>
+        const compounds = [
+            { name: "Salt", scientific: "Sodium Chloride", formula: "NaCl", desc: "Common table salt, used in food and industry." },
+            { name: "Water", scientific: "Dihydrogen Monoxide", formula: "H₂O", desc: "Universal solvent, vital for life." },
+            { name: "Baking Soda", scientific: "Sodium Bicarbonate", formula: "NaHCO₃", desc: "Used in cooking, cleaning, neutralizing acids." },
+            { name: "Vinegar", scientific: "Acetic Acid", formula: "CH₃COOH", desc: "Weak acid found in vinegar." },
+            { name: "Ammonia", scientific: "Ammonium Hydroxide", formula: "NH₃ (aq)", desc: "Used in fertilizers and cleaning." },
+            { name: "Glucose", scientific: "Glucose", formula: "C₆H₁₂O₆", desc: "Simple sugar, energy source." },
+            { name: "Sulfuric Acid", scientific: "Sulfuric Acid", formula: "H₂SO₄", desc: "Strong acid, industrial chemical." },
+            { name: "Calcium Carbonate", scientific: "Calcium Carbonate", formula: "CaCO₃", desc: "Found in limestone, chalk, marble." },
+            { name: "Ethanol", scientific: "Ethyl Alcohol", formula: "C₂H₅OH", desc: "Alcohol in beverages, solvent." },
+            { name: "Methane", scientific: "Methane", formula: "CH₄", desc: "Simplest hydrocarbon, fuel gas." },
+            { name: "Carbon Dioxide", scientific: "Carbon Dioxide", formula: "CO₂", desc: "Greenhouse gas, respiration product." },
+            { name: "Hydrochloric Acid", scientific: "Hydrogen Chloride", formula: "HCl", desc: "Strong acid, stomach acid." },
+            { name: "Nitric Acid", scientific: "Nitric Acid", formula: "HNO₃", desc: "Used in fertilizers, explosives." },
+            { name: "Phosphoric Acid", scientific: "Phosphoric Acid", formula: "H₃PO₄", desc: "Used in soft drinks, fertilizers." },
+            { name: "Calcium Hydroxide", scientific: "Slaked Lime", formula: "Ca(OH)₂", desc: "Used in construction, neutralization." },
+            { name: "Potassium Nitrate", scientific: "Saltpeter", formula: "KNO₃", desc: "Used in fertilizers and fireworks." },
+            { name: "Magnesium Sulfate", scientific: "Epsom Salt", formula: "MgSO₄", desc: "Used in medicine and agriculture." },
+            { name: "Sodium Hydroxide", scientific: "Caustic Soda", formula: "NaOH", desc: "Strong base, used in soap making." },
+            { name: "Calcium Sulfate", scientific: "Gypsum", formula: "CaSO₄", desc: "Used in plaster and cement." },
+            { name: "Acetone", scientific: "Propanone", formula: "C₃H₆O", desc: "Common solvent, nail polish remover." },
+            { name: "Formaldehyde", scientific: "Methanal", formula: "CH₂O", desc: "Used in preservation and resins." },
+            { name: "Urea", scientific: "Carbamide", formula: "CO(NH₂)₂", desc: "Used in fertilizers." },
+            { name: "Citric Acid", scientific: "Citric Acid", formula: "C₆H₈O₇", desc: "Found in citrus fruits." },
+            { name: "Lactic Acid", scientific: "Lactic Acid", formula: "C₃H₆O₃", desc: "Produced in muscles during exercise." },
+            { name: "Ascorbic Acid", scientific: "Vitamin C", formula: "C₆H₈O₆", desc: "Essential nutrient, antioxidant." },
+            { name: "Calcium Phosphate", scientific: "Calcium Phosphate", formula: "Ca₃(PO₄)₂", desc: "Found in bones and teeth." },
+            { name: "Sodium Sulfate", scientific: "Sodium Sulfate", formula: "Na₂SO₄", desc: "Used in detergents." },
+            { name: "Sodium Nitrate", scientific: "Sodium Nitrate", formula: "NaNO₃", desc: "Used in fertilizers and food preservation." },
+            { name: "Potassium Hydroxide", scientific: "Potash", formula: "KOH", desc: "Strong base, used in soap making." },
+            { name: "Calcium Chloride", scientific: "Calcium Chloride", formula: "CaCl₂", desc: "Used for de-icing and drying." },
+            { name: "Sodium Hypochlorite", scientific: "Bleach", formula: "NaClO", desc: "Used as disinfectant." },
+            { name: "Hydrogen Peroxide", scientific: "Hydrogen Peroxide", formula: "H₂O₂", desc: "Used as antiseptic and bleach." },
+            { name: "Sodium Thiosulfate", scientific: "Sodium Thiosulfate", formula: "Na₂S₂O₃", desc: "Used in photography." },
+            { name: "Calcium Nitrate", scientific: "Calcium Nitrate", formula: "Ca(NO₃)₂", desc: "Used in fertilizers." },
+            { name: "Potassium Permanganate", scientific: "Potassium Permanganate", formula: "KMnO₄", desc: "Strong oxidizer, disinfectant." },
+            { name: "Aluminium Oxide", scientific: "Alumina", formula: "Al₂O₃", desc: "Used in abrasives." },
+            { name: "Silicon Dioxide", scientific: "Silica", formula: "SiO₂", desc: "Found in sand and glass." },
+            { name: "Iron Oxide", scientific: "Rust", formula: "Fe₂O₃", desc: "Formed on iron surfaces." },
+            { name: "Copper Sulfate", scientific: "Copper Sulfate", formula: "CuSO₄", desc: "Blue crystals, used in agriculture." },
+            { name: "Zinc Oxide", scientific: "Zinc Oxide", formula: "ZnO", desc: "Used in sunscreen and ointments." },
+            { name: "Lead Nitrate", scientific: "Lead Nitrate", formula: "Pb(NO₃)₂", desc: "Used in explosives." },
+            { name: "Mercury(II) Chloride", scientific: "Mercuric Chloride", formula: "HgCl₂", desc: "Highly toxic compound." },
+            { name: "Silver Nitrate", scientific: "Silver Nitrate", formula: "AgNO₃", desc: "Used in photography and medicine." },
+            { name: "Gold(III) Chloride", scientific: "Chloroauric Acid", formula: "AuCl₃", desc: "Used in gold plating." },
+            { name: "Titanium Dioxide", scientific: "Titanium Dioxide", formula: "TiO₂", desc: "Used as a white pigment." },
+            { name: "Sodium Bicarbonate", scientific: "Baking Soda", formula: "NaHCO₃", desc: "Used in baking and cleaning." },
+            { name: "Calcium Carbonate", scientific: "Chalk", formula: "CaCO₃", desc: "Used in construction and antacids." },
+            { name: "Magnesium Oxide", scientific: "Magnesia", formula: "MgO", desc: "Used as a refractory material." },
+            { name: "Sodium Carbonate", scientific: "Soda Ash", formula: "Na₂CO₃", desc: "Used in glass making and detergents." },
+            { name: "Potassium Carbonate", scientific: "Potash", formula: "K₂CO₃", desc: "Used in soap and glass production." },
+            { name: "Ammonium Nitrate", scientific: "Ammonium Nitrate", formula: "NH₄NO₃", desc: "Used in fertilizers and explosives." },
+            { name: "Calcium Oxide", scientific: "Quicklime", formula: "CaO", desc: "Used in cement and steelmaking." },
+            { name: "Sodium Silicate", scientific: "Water Glass", formula: "Na₂SiO₃", desc: "Used in adhesives and coatings." },
+            { name: "Barium Sulfate", scientific: "Barium Sulfate", formula: "BaSO₄", desc: "Used in medical imaging." },
+            { name: "Strontium Nitrate", scientific: "Strontium Nitrate", formula: "Sr(NO₃)₂", desc: "Used in fireworks." },
+            { name: "Chromium(III) Oxide", scientific: "Chromia", formula: "Cr₂O₃", desc: "Used as a pigment." },
+            { name: "Cobalt(II) Chloride", scientific: "Cobalt(II) Chloride", formula: "CoCl₂", desc: "Used in humidity indicators." },
+            { name: "Nickel(II) Sulfate", scientific: "Nickel(II ) Sulfate", formula: "NiSO₄", desc: "Used in electroplating." },
+            { name: "Cadmium Sulfide", scientific: "Cadmium Sulfide", formula: "CdS", desc: "Used as a pigment." },
+            { name: "Tin(II) Chloride", scientific: "Stannous Chloride", formula: "SnCl₂", desc: "Used in electroplating and as a reducing agent." },
+            { name: "Antimony Trioxide", scientific: "Antimony Trioxide", formula: "Sb₂O₃", desc: "Used as a flame retardant." },
+            { name: "Bismuth(III) Oxide", scientific: "Bismuth(III) Oxide", formula: "Bi₂O₃", desc: "Used in cosmetics and pharmaceuticals." },
+            { name: "Tungsten(VI) Oxide", scientific: "Tungsten(VI) Oxide", formula: "WO₃", desc: "Used in catalysts and smart windows." },
+            { name: "Uranium Oxide", scientific: "Uranium Oxide", formula: "UO₂", desc: "Used as nuclear fuel." },
+            { name: "Caffeine", scientific: "Caffeine", formula: "C₈H₁₀N₄O₂", desc: "Stimulant found in coffee and tea." },
+            { name: "Aspirin", scientific: "Acetylsalicylic Acid", formula: "C₉H₈O₄", desc: "Common pain reliever and anti-inflammatory." },
+            { name: "Paracetamol", scientific: "Acetaminophen", formula: "C₈H₉NO₂", desc: "Used to treat pain and fever." },
+            { name: "Ibuprofen", scientific: "Ibuprofen", formula: "C₁₃H₁₈O₂", desc: "Nonsteroidal anti-inflammatory drug." },
+            { name: "Penicillin", scientific: "Penicillin G", formula: "C₁₆H₁₈N₂O₄S", desc: "Antibiotic used to treat bacterial infections." },
+            { name: "Cholesterol", scientific: "Cholesterol", formula: "C₂₇H₄₆O", desc: "Steroid molecule found in cell membranes." },
+            { name: "DNA", scientific: "Deoxyribonucleic Acid", formula: "(C₁₀H₁₄N₅O₇P)n", desc: "Carrier of genetic information." },
+            { name: "RNA", scientific: "Ribonucleic Acid", formula: "(C₁₀H₁₄N₅O₈P)n", desc: "Involved in protein synthesis." },
+            { name: "Hemoglobin", scientific: "Hemoglobin", formula: "C₂₉₄H₃₂N₄O₈Fe", desc: "Oxygen-carrying protein in red blood cells." },
+            { name: "Chlorophyll", scientific: "Chlorophyll a", formula: "C₅₅H₇₂MgN₄O₅", desc: "Green pigment in plants responsible for photosynthesis." },
+            { name: "Vitamin A", scientific: "Retinol", formula: "C₂₀H₃₀O", desc: "Essential for vision and immune function." },
+            { name: "Vitamin D", scientific: "Cholecalciferol", formula: "C₂₇H₄₄O", desc: "Important for bone health." },
+            { name: "Vitamin E", scientific: "Tocopherol", formula: "C₂₉H₅₀O₂", desc: "Antioxidant that protects cells from damage." },
+            { name: "Vitamin K", scientific: "Phylloquinone", formula: "C₃₁H₄₆O₂", desc: "Essential for blood clotting." },
+            { name: "Glutamic Acid", scientific: "Glutamic Acid", formula: "C₅H₉NO₄", desc: "Amino acid used in protein synthesis." },
+            { name: "Aspartic Acid", scientific: "Aspartic Acid", formula: "C₄H₇NO₄", desc: "Amino acid involved in metabolism." },
+            { name: "Alanine", scientific: "Alanine", formula: "C₃H₇NO₂", desc: "Non-essential amino acid." },
+            { name: "Glycine", scientific: "Glycine", formula: "C₂H₅NO₂", desc: "Simplest amino acid." },
+            { name: "Serine", scientific: "Serine", formula: "C₃H₇NO₃", desc: "Amino acid important for metabolism." },
+            { name: "Threonine", scientific: "Threonine", formula: "C₄H₉NO₃", desc: "Essential amino acid." },
+            { name: "Cysteine", scientific: "Cysteine", formula: "C₃H₇NO₂S", desc: "Amino acid containing sulfur." },
+            { name: "Tyrosine", scientific: "Tyrosine", formula: "C₉H₁₁NO₃", desc: "Amino acid used in protein synthesis." },
+            { name: "Phenylalanine", scientific: "Phenylalanine", formula: "C₉H₁₁NO₂", desc: "Essential amino acid." },
+            { name: "Lysine", scientific: "Lysine", formula: "C₆ H₁₄N₂O₂", desc: "Essential amino acid." },
+            { name: "Histidine", scientific: "Histidine", formula: "C₆H₉N₃O₂", desc: "Essential amino acid." },
+            { name: "Arginine", scientific: "Arginine", formula: "C₆H₁₄N₄O₂", desc: "Semi-essential amino acid." },
+            { name: "Proline", scientific: "Proline", formula: "C₅H₉NO₂", desc: "Amino acid important for protein structure." },
+
+
+            // 👉 Add more objects here until you reach 100
+        ];
+
+        const grid = document.getElementById("grid");
+        compounds.forEach(c => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+    <div class="name">${c.name}</div>
+    <div class="scientific">${c.scientific}</div>
+    <div class="formula">${c.formula}</div>
+    <div class="desc">${c.desc}</div>
+  `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+
+</html>

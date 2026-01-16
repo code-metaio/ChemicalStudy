@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Kamil Mirza</title>
+  <link rel="shortcut icon" href="hyth.png" type="hyth">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: rgba(0,0,0,0.4);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      animation: fadeInDown 1.5s ease;
+    }
+
+    header h2 {
+      font-size: 1.5rem;
+      color: #00d9ff;
+      animation: fadeInUp 2s ease;
+    }
+
+    nav {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    nav a button {
+      background: #00d9ff;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a button:hover {
+      background: #fff;
+      color: #00d9ff;
+      transform: scale(1.05);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .about-text {
+      flex: 1 1 60%;
+      padding: 1rem;
+      animation: fadeInLeft 2s ease;
+    }
+
+    .about-text p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .about-img {
+      flex: 1 1 35%;
+      text-align: center;
+      animation: fadeInRight 2s ease;
+    }
+
+    .about-img img {
+      width: 80%;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      transition: transform 0.3s;
+    }
+
+    .about-img img:hover {
+      transform: scale(1.05);
+    }
+
+    .contact {
+      background: rgba(255,255,255,0.05);
+      padding: 2rem;
+      margin: 2rem auto;
+      border-radius: 10px;
+      max-width: 800px;
+      animation: fadeIn 2.5s ease;
+    }
+
+    .contact h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #00d9ff;
+    }
+
+    .contact p {
+      margin: 0.5rem 0;
+      text-align: center;
+    }
+
+    .contact a {
+      color: #00d9ff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .contact a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0,0,0,0.6);
+      font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .about-img img {
+        width: 60%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>About the Author</h1>
+    <h2>KAMIL MIRZA</h2>
+  </header>
+
+  <nav>
+    <a href="index.html"><button>Go to Home Page</button></a>
+  </nav>
+
+  <section class="container">
+    <div class="about-text">
+      <p>Hello! My name is <strong>Kamil Mirza</strong>, and I am passionate about the fascinating world of chemistry. I created this website to share my knowledge and enthusiasm for this essential science with others.</p>
+      <p>I have been studying chemistry for several years and have a deep appreciation for how it impacts our daily lives. From the food we eat to the medicines we take, chemistry plays a crucial role in shaping our world.</p>
+      <p>Through this website, I aim to provide clear and concise information about various chemistry topics, including chemical formulas, elements, acids, and bases. My goal is to make chemistry accessible and engaging for everyone, whether you're a student, educator, or simply curious about the subject.</p>
+      <p>Thank you for visiting my website, and I hope you find the information helpful and inspiring!</p>
+    </div>
+    <div class="about-img">
+      <img src="Myimage.jpeg" alt="Kamil Mirza">
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2>Contact Information</h2>
+    <p><strong>Email:</strong> <a href="mailto:kamilmirza250611250611@gmail.com">kamilmirza250611250611@gmail.com</a></p>
+    <p><strong>Phone:</strong> +91 63980-20665</p>
+    <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/kamilmirza" target="_blank">linkedin.com/in/kamilmirza</a></p>
+    <p><strong>GitHub:</strong> <a href="https://github.com/Kamil123-mirza/" target="_blank">github.com/Kamil123-mirza</a></p>
+  </section>
+
+  <footer>
+    © 2026 KAMIL MIRZA. All rights reserved.
+  </footer>
+</body>
+</html>

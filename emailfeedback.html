@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback Form | Kamil Mirza</title>
+  <link rel="shortcut icon" href="hyth.png" type="hyth">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2vh;
+    }
+
+    .container {
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 500px;
+      animation: fadeIn 1.5s ease;
+    }
+    .containe{
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 500px;
+      animation: fadeIn 1.5s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 3vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #00d9ff, #7cffc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #7cffc4;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    input:focus, textarea:focus {
+      background: rgba(255,255,255,0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #00d9ff, #7cffc4);
+      color: #0f2027;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #ffeb3b;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    a.feedback-btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #00d9ff, #7cffc4);
+      color: #0f2027;
+      font-weight: bold;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    a.feedback-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.6);
+    }
+
+    /* Animated glow effect */
+    a.feedback-btn::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 40%);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes pulse {
+      0% {transform: scale(0.8); opacity: 0.7;}
+      50% {transform: scale(1.2); opacity: 0.3;}
+      100% {transform: scale(0.8); opacity: 0.7;}
+    }
+
+    p {
+      margin-top: 20px;
+      color: #9fb3c8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Send Feedback</h1>
+    <form id="feedbackForm">
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="user_name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="user_email" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Feedback</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit">Send Feedback</button>
+      <div class="status" id="status"></div>
+    </form>
+  </div>
+  
+
+
+
+  <div class="containe">
+    <h1>Send Your Feedback</h1>
+    <a class="feedback-btn" href="mailto:kamilmirza250611250611@gmail.com?subject=Website%20Feedback&body=Hello%20Kamil,%20here%20is%20my%20feedback...">
+      ✉ Send Feedback
+    </a>
+    <button class="feedback-btn" id="hm">Go to Home Page</button>
+    <p>Click the button above to send feedback directly to my email.</p>
+  </div>
+ 
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+  <script>
+    document.getElementById("hm").onclick = function() {
+      location.href = "index.html";
+    };
+    (function(){
+      emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+    })();
+
+    const form = document.getElementById("feedbackForm");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", this)
+        .then(function() {
+          status.innerHTML = "✅ Feedback sent successfully!";
+          form.reset();
+        }, function(error) {
+          status.innerHTML = "❌ Failed to send feedback. Try again!";
+          console.log(error);
+        });
+    });
+
+
+    document.querySelector(".feedback-btn").addEventListener("click", () => {
+      console.log("Feedback button clicked — opening email client.");
+    });
+  </script>
+</body>
+</html> 
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback | Kamil Mirza</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #00d9ff, #7cffc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    a.feedback-btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #00d9ff, #7cffc4);
+      color: #0f2027;
+      font-weight: bold;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    a.feedback-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.6);
+    }
+
+    /* Animated glow effect */
+    a.feedback-btn::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 40%);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes pulse {
+      0% {transform: scale(0.8); opacity: 0.7;}
+      50% {transform: scale(1.2); opacity: 0.3;}
+      100% {transform: scale(0.8); opacity: 0.7;}
+    }
+
+    p {
+      margin-top: 20px;
+      color: #9fb3c8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Send Your Feedback</h1>
+    <a class="feedback-btn" href="mailto:kamilmirza250611250611@gmail.com?subject=Website%20Feedback&body=Hello%20Kamil,%20here%20is%20my%20feedback...">
+      ✉ Send Feedback
+    </a>
+    <p>Click the button above to send feedback directly to my email.</p>
+  </div>
+
+  <script>
+    // Optional: Add a small animation when page loads
+    document.querySelector(".feedback-btn").addEventListener("click", () => {
+      console.log("Feedback button clicked — opening email client.");
+    });
+  </script>
+</body>
+</html> -->

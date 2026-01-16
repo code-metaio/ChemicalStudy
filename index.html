@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemical Introduction with Chemistry</title>
+  <link rel="shortcut icon" href="hyth.png" type="hyth">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f4f4;
+      color: #333;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #007BFF;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffeb3b;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: url('background.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color:black;
+      padding: 0 20px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      animation: fadeInDown 2s ease;
+    }
+
+    .hero h2 {
+      font-size: 1.5rem;
+      margin-top: 10px;
+      animation: fadeInUp 2s ease;
+    }
+
+    .hero button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      background: #ffeb3b;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hero button:hover {
+      background: #fff;
+      transform: scale(1.1);
+    }
+
+    /* Sections */
+    section {
+      max-width: 1000px;
+      margin: auto;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    section h2 {
+      margin-bottom: 20px;
+      color: #007BFF;
+    }
+
+    section p, section ul {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin: 10px 0;
+      background: rgba(0, 123, 255, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+      transition: transform 0.3s;
+    }
+
+    ul li:hover {
+      transform: scale(1.05);
+    }
+
+    /* Image Section */
+    .image-section img {
+      width: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      transition: transform 0.3s;
+    }
+
+    .image-section img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Footer */
+    footer {
+      background: #007BFF;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Dark Mode */
+    .dark-mode {
+      background: #121212;
+      color: #f4f4f4;
+    }
+
+    .dark-mode nav {
+      background: #333;
+    }
+
+    .dark-mode footer {
+      background: #333;
+    }
+
+    .dark-mode .hero {
+      background: url('background.jpg') center/cover no-repeat;
+      filter: brightness(0.6);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .hero h2 {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="About.html">About</a>
+    <a href="Element.html">Elements</a>
+    <a href="Formula.html">Formulas</a>
+    <a href="Acid.html">Acids</a>
+    <a href="Base.html">Base</a>
+    <a href="emailfeedback.html">Email Feedback</a>
+    <a href="mobilefeedback.html">Mobile Feedback</a>
+    <a href="#" onclick="toggleDarkMode()">🌙 Toggle Mode</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1>Chemical Introduction with Chemistry</h1>
+    <h2>By: KAMIL MIRZA | Date: 15 Jan 2026</h2>
+    <button onclick="scrollToContent()">Explore Chemistry</button>
+  </div>
+
+  <!-- Introduction -->
+  <section id="intro">
+    <h2>Introduction to Chemistry</h2>
+    <p>Chemistry is the branch of science that studies the properties, composition, and behavior of matter. It explores how substances interact with each other and the energy changes that accompany these interactions.</p>
+  </section>
+
+  <!-- Branches -->
+  <section>
+    <h2>Branches of Chemistry</h2>
+    <ul>
+      <li><strong>Organic Chemistry:</strong> The study of carbon-containing compounds.</li>
+      <li><strong>Inorganic Chemistry:</strong> The study of inorganic compounds.</li>
+      <li><strong>Physical Chemistry:</strong> The study of matter at molecular and atomic levels.</li>
+      <li><strong>Analytical Chemistry:</strong> The study of composition and measurement tools.</li>
+      <li><strong>Biochemistry:</strong> The study of chemical processes in living organisms.</li>
+    </ul>
+  </section>
+
+  <!-- Importance -->
+  <section>
+    <h2>Importance of Chemistry</h2>
+    <p>Chemistry plays a crucial role in industries including pharmaceuticals, agriculture, food production, and environmental science. It helps in developing new materials, medicines, and technologies that improve our quality of life.</p>
+  </section>
+
+  <!-- Conclusion -->
+  <section>
+    <h2>Conclusion</h2>
+    <p>Chemistry is a fundamental science that provides insights into the nature of matter and its transformations. Understanding chemistry is essential for advancements in science and technology, making it a vital field of study.</p>
+  </section>
+
+  <!-- Image Section -->
+  <section class="image-section">
+    <a href="https://pubchem.ncbi.nlm.nih.gov/periodic-table/">
+      <img src="pt.jpg" alt="Periodic Table">
+    </a>
+    <br><br>
+    <a href="pt.jpg" download>⬇ Download This Image</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2026 KAMIL MIRZA. All rights reserved.
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function scrollToContent() {
+      document.getElementById("intro").scrollIntoView({ behavior: "smooth" });
+    }
+  </script>
+
+</body>
+</html>
